@@ -19,7 +19,7 @@ def calculate_scrabble_score(word):
 
 
 def main():
-    user_word = raw_input("Enter a word: ").lower()  # Convert the input word to lowercase
+    user_word = input("Enter a word: ").lower()  # Convert the input word to lowercase
     score = calculate_scrabble_score(user_word)
     print("The Scrabble score for '{}' is: {}".format(user_word, score))
 
