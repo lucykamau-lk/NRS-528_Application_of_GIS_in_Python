@@ -1,5 +1,5 @@
 # Code Challenge 04
-In this code challenge i have explored 2 arcpy tools, i.e **Conversion Tools**.
+In this code challenge i have explored 2 arcpy tools, i.e **Conversion Tool**.
 1. Converting KML file to Layer
    
 The input data is Watershed.kml acquired from (https://streamstats.usgs.gov/ss/) and by using script 'KML To Layer.py' the output file are in Results.zip.
