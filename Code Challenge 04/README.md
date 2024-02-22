@@ -6,4 +6,4 @@ The input data is Watershed.kml acquired from (https://streamstats.usgs.gov/ss/)
 
 2. Converting Excel to Table
    
-The input data is Meshanticut Precipitation.csv acquired from (https://hdsc.nws.noaa.gov/pfds/) and by using 'Excel to Table.py' the output file are in Final.zip
+The input data is Meshanticut Precipitation Data.csv acquired from (https://hdsc.nws.noaa.gov/pfds/) and by using 'Excel to Table.py' the output file are in Final.zip
