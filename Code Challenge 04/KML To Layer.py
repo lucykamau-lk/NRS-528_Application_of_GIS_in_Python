@@ -33,7 +33,7 @@ if __name__ == "__main__":
     kml_file_path = r"C:\GitHub\NRS_528\Code Challenge 04\Watershed.kml"
 
     # Output layer file path - replace with your desired output layer path
-    output_folder_path = r"C:\GitHub\NRS_528\Code Challenge 04\\Final"
+    output_folder_path = r"C:\GitHub\NRS_528\Code Challenge 04\Results"
 
 
     # Create output folder if it doesn't exist
