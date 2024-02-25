@@ -9,7 +9,7 @@ yearly_data = defaultdict(list)
 all_values = []  # List to store all daily values
 
 # Read the CSV file and store the data by year
-with open('C:\\GitHub\\NRS_528\\Code Challenge 03\\co-ppm-daily.csv', 'r') as file:
+with open('co2-ppm-daily.csv', 'r') as file:
     csv_reader = csv.reader(file)
     next(csv_reader)  # Skip the header row if it exists
     for row in csv_reader:
@@ -70,4 +70,4 @@ for season, avg in seasonal_averages.items():
 print("\nAnomalies Relative to Overall Mean:")
 print(anomalies)  # Debug print
 for date, anomaly in anomalies:
-    print("{}: {}".format(anomaly[20], anomaly[30]))
+    print("{}: {}".format(str(date), str(anomaly)))
