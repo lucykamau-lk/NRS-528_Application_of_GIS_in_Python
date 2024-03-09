@@ -1,12 +1,10 @@
 import arcpy
 import os
-
-def excel_to_table(input_excel, output_gdb, output_table_name):
-    pass
+def convert_data(input_excel_file, output_folder):
     try:
-        arcpy.env.workspace = os.getcwd()
+        arcpy.env.workspace = output_folder
         arcpy.CheckOutExtension("Spatial")
-        arcpy.TableToTable_conversion(input_excel, output_gdb, output_table_name)
+        arcpy.TableToTable_conversion(input_excel_file, output_folder, "output_table")
 
         print("Conversion completed successfully.")
     except arcpy.ExecuteError:
@@ -18,9 +16,6 @@ def excel_to_table(input_excel, output_gdb, output_table_name):
 
 if __name__ == "__main__":
     input_excel_path = r"C:\GitHub\NRS_528\Trial_04\Meshanticut Precipitation Data.csv"
+    output_folder_path = r"C:\GitHub\NRS_528\Trial_04\Excel to table"
 
-    output_gdb_path = r"C:\GitHub\NRS_528\Trial_04\Excel to table"
-
-    output_table_name = "output_table"
-
-    excel_to_table(input_excel_path, output_gdb_path, output_table_name)
+    convert_data(input_excel_path, output_folder_path)
