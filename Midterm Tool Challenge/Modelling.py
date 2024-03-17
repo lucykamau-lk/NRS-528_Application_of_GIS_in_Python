@@ -23,6 +23,11 @@ print("Flow direction analysis successful.")
 flow_acc = FlowAccumulation(flow_dir)
 print("Flow accumulation analysis successful.")
 
+# Save Flow Accumulation result in the output folder
+flow_acc.save(os.path.join(output_folder, "FlowAcc_FlowDir1.tif"))
+
+print("Flow accumulation result saved in the output folder.")
+
 # Stream network delineation
 stream_threshold = Con(flow_acc > 1000, 1)
 stream_network = StreamLink(stream_threshold, flow_dir)
@@ -60,5 +65,4 @@ basins.save(os.path.join(output_folder, "drainage_basins.tif"))
 stream_order.save(os.path.join(output_folder, "stream_order.tif"))
 floodplain.save(os.path.join(output_folder, "floodplain.tif"))
 
-print("Hydrological modeling analysis completed, and files are saved.")
-
+print("Hydrological modelling analysis completed, and files are saved.")
