@@ -41,7 +41,7 @@ Generates a floodplain map based on the stream network.
 Saves all the analysis results (flow direction, flow accumulation, stream network, watershed, slope, aspect, drainage basins, stream order, and floodplain) as individual raster files in the specified output folder.
 
 (l) Print Completion Message:
-Displays a message indicating that the hydrological modeling, analysis, and file cleanup are completed.
+Displays a message indicating that the hydrological modeling, analysis, and file are saved.
 
 **Overall, this code performs a comprehensive set of hydrological analyses on the input DEM data and saves the results to the specified output folder for further use or visualization.**
 
