@@ -5,5 +5,5 @@
 
 
 ## Below is a visualization Document of the images generated.
-[Link to PDF](.Code_Challenge_10/NVDI Visualization Document/NVDI.pdf)
+![Image](https://imgur.com/a/R4yv0FD))
 
