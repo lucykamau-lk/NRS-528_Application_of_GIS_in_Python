@@ -5,5 +5,5 @@
 
 
 ## Below is a visualization Document of the images generated.
-![Image](https://imgur.com/a/R4yv0FD))
+![Image](https://i.imgur.com/XUe6XUh.jpeg)
 
