@@ -5,4 +5,4 @@
 
 
 ## Below is a visualization Document of the images generated.
-[Link to pdf](file:///C:/Users/Student/Desktop/NVID.pdf).
+[Link to PDF](NVDI.pdf)
