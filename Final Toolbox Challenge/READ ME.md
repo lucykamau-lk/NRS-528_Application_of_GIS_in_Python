@@ -1,4 +1,4 @@
-# Advanced Conversion Toolbox 
+# Advanced Conversion Toolbox. 
 ## This toolbox includes several tool classes for different conversion tasks. They include;
 ## TIFF to Shapefile.
 This tool converts raster TIFF data to vector Shapefile format, facilitating further analysis and visualization in GIS applications.
