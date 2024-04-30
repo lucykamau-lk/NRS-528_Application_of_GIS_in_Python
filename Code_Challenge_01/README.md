@@ -14,5 +14,5 @@ LinkedIN:[@TwitterHandle](https://www.linkedin.com/in/lucy-n-kamau-6a2434189/)
 ## Feeding Giraffes
 One of the most amazing thing i recommend people to do when they visit Kenya, feeding the giraffes.
 
-![Girrafe Center, Nairobi, Kenya.](https://i.ytimg.com/vi/Ymyi4-ade6Y/maxresdefault.jpg)
+[![Girraffe-Centre-2024-04-30-at-7-18-08-AM.jpg](https://i.postimg.cc/6qfNp1Gm/Girraffe-Centre-2024-04-30-at-7-18-08-AM.jpg)](https://postimg.cc/SYRPZdd6)
 
