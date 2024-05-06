@@ -15,10 +15,16 @@
    * Working with CSV
 4. Code_Challenge_04
    * Using a particular tool in Arcpy. 
-8. Code_Challenge_05
-9. Code_Challenge_08
-10. Code_Challenge_09
-11. Code_Challenge_10
-12. Final Toolbox Challenge
-13. Midterm Tool Challenge
+5. Code_Challenge_05
+   * Generating Heatmap and fishnet.
+6. Code_Challenge_08
+   * Functions
+7. Code_Challenge_09
+   * Using arcpy.da module to undertake some basic partitioning of the dataset.
+8. Code_Challenge_10
+   * Rasters
+9. Final Toolbox Challenge
+   * Advanced Conversion Toolbox
+10. Midterm Tool Challenge
+    * 
 
