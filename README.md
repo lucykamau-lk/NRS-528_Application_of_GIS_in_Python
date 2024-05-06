@@ -1,4 +1,4 @@
-# NRS 528 (Spring 2025) Code Challenge Collection : Coding Mastery!
+# NRS 528 (Spring 2024) Code Challenge Collection : Coding Mastery!
 
 ## By Lucy Kamau
 1. Code_Challenge_01
