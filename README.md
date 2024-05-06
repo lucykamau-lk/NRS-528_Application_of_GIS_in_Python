@@ -14,9 +14,9 @@
    * Push sys.argv to the limit
    * Working with CSV
 4. Code_Challenge_04
-   * Using a particular tool in Arcpy. 
+   * Using a specific tool in Arcpy
 5. Code_Challenge_05
-   * Generating Heatmap and fishnet.
+   * Generating Heatmap and fishnet
 6. Code_Challenge_08
    * Functions
 7. Code_Challenge_09
