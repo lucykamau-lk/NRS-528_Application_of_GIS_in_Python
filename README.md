@@ -9,6 +9,6 @@
 6. Code_Challenge_08
 7. Code_Challenge_09
 8. Code_Challenge_10
-9. Final Tool Challenge
+9. Final Toolbox Challenge
 10. Midterm Tool Challenge
 
