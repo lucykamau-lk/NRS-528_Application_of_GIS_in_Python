@@ -26,5 +26,5 @@
 9. Final Toolbox Challenge
    * Advanced Conversion Toolbox
 10. Midterm Tool Challenge
-    * 
+    * Hydrological Modelling: Floodplain Mapping
 
