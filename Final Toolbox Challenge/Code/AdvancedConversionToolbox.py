@@ -2,249 +2,302 @@ import arcpy
 import os
 import json
 
+# Set up environment to allow overwriting output files
 arcpy.env.overwriteOutput = True
-
 
 class Toolbox(object):
     def __init__(self):
-        """Define the toolbox (the name of the toolbox is the name of the .pyt file)."""
+        """Toolbox definition with a list of tools"""
         self.label = "Advanced Conversion Toolbox"
-        self.alias = "ConversionTools"
-        self.tools = [TifftoShapefile, AddXY, IntersectShapefiles, ShapefileToGeoJSON, CleanGeoJSONForFlutter]
-
+        self.alias = ""
+        # List of tool classes associated with this toolbox
+        self.tools = [TifftoShapefile, AddXY, IntersectShapefiles, CleanShapefile, ShapefileToGeoJSON, StructuredGeoJSON]
 
 class TifftoShapefile(object):
     def __init__(self):
-        """Convert a TIFF file to a Shapefile."""
+        """Tool for converting TIFF to Shapefile"""
         self.label = "Convert TIFF to Shapefile"
         self.description = "Converts a raster TIFF file to a vector Shapefile by raster to polygon conversion."
 
     def getParameterInfo(self):
-        """Define parameter definitions"""
-        return [
-            arcpy.Parameter(
-                displayName="Input TIFF File",
-                name="in_tiff",
-                datatype="DERasterDataset",
-                parameterType="Required",
-                direction="Input"),
-            arcpy.Parameter(
-                displayName="Output Shapefile",
-                name="out_shapefile",
-                datatype="DEShapefile",
-                parameterType="Required",
-                direction="Output")
-        ]
+        """Parameter definitions for the tool"""
+        params = [arcpy.Parameter(displayName="Input TIFF File",
+                                  name="in_tiff",
+                                  datatype="DERasterDataset",
+                                  parameterType="Required",
+                                  direction="Input"),
+                  arcpy.Parameter(displayName="Output Shapefile",
+                                  name="out_shapefile",
+                                  datatype="DEShapefile",
+                                  parameterType="Required",
+                                  direction="Output")]
+        return params
 
     def execute(self, parameters, messages):
-        """Run the tool."""
+        """Execution of converting TIFF to Shapefile"""
         in_tiff = parameters[0].valueAsText
         out_shapefile = parameters[1].valueAsText
 
         # Check if the input TIFF file exists and is valid
+        if not arcpy.Exists(in_tiff):
+            arcpy.AddError("Input TIFF file does not exist or is invalid.")
+            return
+
+        # Describe the input TIFF file
         desc_tiff = arcpy.Describe(in_tiff)
         if desc_tiff.dataType != "RasterDataset":
             arcpy.AddError("Input is not a valid raster TIFF file.")
             return
 
         arcpy.RasterToPolygon_conversion(in_tiff, out_shapefile, "NO_SIMPLIFY", "VALUE")
-        arcpy.AddMessage(f"Converted TIFF to Shapefile: {out_shapefile}")
-
-        # Delete temporary files
-        arcpy.Delete_management("in_memory/temp_polygon")
-
+        print("Conversion complete: " + out_shapefile)
 
 class AddXY(object):
     def __init__(self):
-        """Add XY coordinates to a Shapefile."""
+        """Tool for adding XY coordinates to each point in the shapefile"""
         self.label = "Add XY Coordinates"
         self.description = "Adds XY coordinates to each point in the shapefile."
 
     def getParameterInfo(self):
-        """Define parameter definitions"""
-        return [
+        """Parameter definitions for the tool"""
+        params = [
             arcpy.Parameter(
                 displayName="Input Shapefile",
                 name="in_shapefile",
                 datatype="DEShapefile",
                 parameterType="Required",
-                direction="Input")
+                direction="Input"
+            ),
+            arcpy.Parameter(
+                displayName="Output Shapefile",
+                name="out_shapefile",
+                datatype="DEShapefile",
+                parameterType="Required",
+                direction="Output"
+            )
         ]
+        return params
 
     def execute(self, parameters, messages):
-        """Run the tool."""
+        """Execution of adding XY coordinates"""
         in_shapefile = parameters[0].valueAsText
+        out_shapefile = parameters[1].valueAsText
 
         # Check if the input shapefile exists and is valid
         if not arcpy.Exists(in_shapefile):
             arcpy.AddError("Input Shapefile does not exist or is invalid.")
             return
 
-        desc_shapefile = arcpy.Describe(in_shapefile)
-        if desc_shapefile.shapeType != "Point":
-            arcpy.AddError("Input is not a valid point Shapefile.")
-            return
-
         temp_points = "in_memory/temp_points"
         arcpy.FeatureToPoint_management(in_shapefile, temp_points)
         arcpy.AddXY_management(temp_points)
-        arcpy.CopyFeatures_management(temp_points, in_shapefile)
-        arcpy.AddMessage(f"Added XY coordinates to: {in_shapefile}")
+        arcpy.CopyFeatures_management(temp_points, out_shapefile)
 
-        # Delete temporary files
-        arcpy.Delete_management(temp_points)
-
+        # Output message
+        arcpy.AddMessage(f"XY coordinates added. Output shapefile saved as: {out_shapefile}")
 
 class IntersectShapefiles(object):
     def __init__(self):
-        """Intersect two shapefiles."""
+        """Tool for intersecting two shapefiles"""
         self.label = "Intersect Shapefiles"
-        self.description = "Intersects two Shapefiles to create a new Shapefile."
+        self.description = "Intersects two Shapefiles."
 
     def getParameterInfo(self):
-        """Define parameter definitions"""
-        return [
-            arcpy.Parameter(
-                displayName="Input Shapefile 1",
-                name="in_shapefile1",
-                datatype="DEShapefile",
-                parameterType="Required",
-                direction="Input"),
-            arcpy.Parameter(
-                displayName="Input Shapefile 2",
-                name="in_shapefile2",
-                datatype="DEShapefile",
-                parameterType="Required",
-                direction="Input"),
-            arcpy.Parameter(
-                displayName="Output Shapefile",
-                name="out_shapefile",
-                datatype="DEShapefile",
-                parameterType="Required",
-                direction="Output")
-        ]
+        """Parameter definitions for the tool"""
+        params = [arcpy.Parameter(displayName="Input Shapefile 1",
+                                  name="in_shapefile1",
+                                  datatype="DEShapefile",
+                                  parameterType="Required",
+                                  direction="Input"),
+                  arcpy.Parameter(displayName="Input Shapefile 2",
+                                  name="in_shapefile2",
+                                  datatype="DEShapefile",
+                                  parameterType="Required",
+                                  direction="Input"),
+                  arcpy.Parameter(displayName="Output Shapefile",
+                                  name="out_shapefile",
+                                  datatype="DEShapefile",
+                                  parameterType="Required",
+                                  direction="Output")]
+        return params
 
     def execute(self, parameters, messages):
-        """Run the tool."""
+        """Execution of intersecting shapefiles"""
+        print("Running tool: " + self.label)  # Print statement
         in_shapefile1 = parameters[0].valueAsText
         in_shapefile2 = parameters[1].valueAsText
         out_shapefile = parameters[2].valueAsText
 
         # Check if the input shapefiles exist and are valid
-        if not (arcpy.Exists(in_shapefile1) and arcpy.Exists(in_shapefile2)):
-            arcpy.AddError("One or both input shapefiles do not exist.")
+        if not arcpy.Exists(in_shapefile1):
+            arcpy.AddError("Input Shapefile 1 does not exist or is invalid.")
+            return
+        if not arcpy.Exists(in_shapefile2):
+            arcpy.AddError("Input Shapefile 2 does not exist or is invalid.")
             return
 
         arcpy.Intersect_analysis([in_shapefile1, in_shapefile2], out_shapefile)
-        arcpy.AddMessage(f"Intersected Shapefiles: {out_shapefile}")
+        print("Intersection complete: " + out_shapefile)
 
-
-class ShapefileToGeoJSON(object):
+class CleanShapefile(object):
     def __init__(self):
-        """Convert a Shapefile to GeoJSON."""
-        self.label = "Convert Shapefile to GeoJSON"
-        self.description = "Converts a Shapefile to a GeoJSON file suitable for web applications."
+        """Tool for cleaning a shapefile"""
+        self.label = "Clean Shapefile"
+        self.description = "Deletes specified fields from the attribute table of a shapefile."
 
     def getParameterInfo(self):
-        """Define parameter definitions"""
-        return [
+        """Parameter definitions for the tool"""
+        params = [
             arcpy.Parameter(
                 displayName="Input Shapefile",
                 name="in_shapefile",
                 datatype="DEShapefile",
                 parameterType="Required",
-                direction="Input"),
+                direction="Input"
+            ),
             arcpy.Parameter(
-                displayName="Output GeoJSON",
-                name="out_geojson",
-                datatype="DEFile",
+                displayName="Fields to Delete",
+                name="fields_to_delete",
+                datatype="GPString",
                 parameterType="Required",
-                direction="Output")
+                direction="Input",
+                multiValue=True
+            ),
+            arcpy.Parameter(
+                displayName="Output Shapefile",
+                name="out_shapefile",
+                datatype="DEShapefile",
+                parameterType="Required",
+                direction="Output"
+            )
         ]
+        return params
 
     def execute(self, parameters, messages):
-        """Run the tool."""
+        """Execution of deleting fields from the attribute table"""
+        in_shapefile = parameters[0].valueAsText
+        fields_to_delete = parameters[1].values  # List of field names to delete
+        out_shapefile = parameters[2].valueAsText  # Output shapefile path
+
+        # Check if the input shapefile exists and is valid
+        if not arcpy.Exists(in_shapefile):
+            arcpy.AddError("Input Shapefile does not exist or is invalid.")
+            return
+
+        # Describe the input shapefile
+        desc_shapefile = arcpy.Describe(in_shapefile)
+        field_names = [field.name for field in desc_shapefile.fields]
+
+        # Check if any fields are selected for deletion
+        if not fields_to_delete:
+            arcpy.AddError("No fields selected for deletion.")
+            return
+
+        # Check if fields to delete exist in the input shapefile
+        non_existing_fields = [field for field in fields_to_delete if field not in field_names]
+        if non_existing_fields:
+            arcpy.AddError(f"The following fields do not exist in the input shapefile: {', '.join(non_existing_fields)}")
+            return
+
+        try:
+            # Delete the specified fields from the attribute table
+            arcpy.DeleteField_management(in_shapefile, fields_to_delete)
+            arcpy.AddMessage("Fields deleted successfully from: " + in_shapefile)
+
+            # Copy the cleaned shapefile to the output location
+            arcpy.CopyFeatures_management(in_shapefile, out_shapefile)
+            arcpy.AddMessage("Cleaned shapefile saved as: " + out_shapefile)
+        except arcpy.ExecuteError as e:
+            arcpy.AddError(f"Error: {e}")
+
+class ShapefileToGeoJSON(object):
+    def __init__(self):
+        """Tool for converting Shapefile to GeoJSON"""
+        self.label = "Convert Shapefile to GeoJSON"
+        self.description = "Converts a Shapefile to a GeoJSON file."
+
+    def getParameterInfo(self):
+        """Parameter definitions for the tool"""
+        params = [arcpy.Parameter(displayName="Input Shapefile",
+                                  name="in_shapefile",
+                                  datatype="DEShapefile",
+                                  parameterType="Required",
+                                  direction="Input"),
+                  arcpy.Parameter(displayName="Output GeoJSON",
+                                  name="out_geojson",
+                                  datatype="DEFile",
+                                  parameterType="Required",
+                                  direction="Output")]
+        return params
+
+    def execute(self, parameters, messages):
+        print("Running tool: " + self.label)  # Print statement
         in_shapefile = parameters[0].valueAsText
         out_geojson = parameters[1].valueAsText
 
         # Check if the input shapefile exists and is valid
         if not arcpy.Exists(in_shapefile):
-            arcpy.AddError(f"The file {in_shapefile} does not exist.")
+            arcpy.AddError("Input Shapefile does not exist or is invalid.")
             return
 
-        arcpy.FeaturesToJSON_conversion(in_shapefile, out_geojson, format_json="FORMATTED")
-        arcpy.AddMessage(f"Converted Shapefile to GeoJSON: {out_geojson}")
+        # Describe the input shapefile
+        desc_shapefile = arcpy.Describe(in_shapefile)
+        if desc_shapefile.shapeType not in ["Point", "Polyline", "Polygon"]:
+            arcpy.AddError("Input shapefile must be a point, polyline, or polygon shapefile.")
+            return
 
-        # Delete temporary files
-        arcpy.Delete_management("in_memory/temp_feature_class")
+        # Perform the conversion
+        arcpy.FeaturesToJSON_conversion(in_features=in_shapefile, out_json_file=out_geojson,
+                                        format_json="FORMATTED")
+        print("Shapefile converted to GeoJSON: " + out_geojson)
 
-
-class CleanGeoJSONForFlutter(object):
+class StructuredGeoJSON(object):
     def __init__(self):
-        """Clean and format GeoJSON for use in Flutter applications."""
-        self.label = "Clean GeoJSON for Flutter"
-        self.description = "Formats a GeoJSON file for optimal use in Flutter mobile applications."
+        self.label = "Structured GeoJSON"
+        self.description = "Formats a GeoJSON file to be easily readable by a Flutter application."
 
     def getParameterInfo(self):
-        """Define parameter definitions"""
-        return [
-            arcpy.Parameter(
-                displayName="Input GeoJSON",
-                name="in_geojson",
-                datatype="DEFile",
-                parameterType="Required",
-                direction="Input"),
-            arcpy.Parameter(
-                displayName="Output Clean JSON",
-                name="out_clean_json",
-                datatype="DEFile",
-                parameterType="Required",
-                direction="Output")
-        ]
+        params = [arcpy.Parameter(displayName="Input GeoJSON",
+                                  name="in_geojson",
+                                  datatype="DEFile",
+                                  parameterType="Required",
+                                  direction="Input"),
+                  arcpy.Parameter(displayName="Output Structured JSON",
+                                  name="out_structured_json",
+                                  datatype="DEFile",
+                                  parameterType="Required",
+                                  direction="Output")]
+        return params
 
     def execute(self, parameters, messages):
-        """Run the tool."""
+        print("Running tool: " + self.label)  # Print statement
         in_geojson = parameters[0].valueAsText
-        out_clean_json = parameters[1].valueAsText
+        out_structured_json = parameters[1].valueAsText
 
         # Check if the input GeoJSON file exists and is valid
         if not arcpy.Exists(in_geojson):
-            arcpy.AddError(f"The file {in_geojson} does not exist.")
+            arcpy.AddError("Input GeoJSON file does not exist or is invalid.")
             return
 
+        # Load GeoJSON data
         with open(in_geojson, 'r') as file:
             data = json.load(file)
 
-        with open(out_clean_json, 'w') as file:
-            json.dump(data, file, indent=4)
+        # Perform structuring operations on the data
 
-        arcpy.AddMessage(f"Cleaned GeoJSON saved as: {out_clean_json}")
+        # Save structured JSON to output file
+        with open(out_structured_json, 'w') as file:
+            json.dump(data, file, indent=4)
 
 
 def main():
-    """Test each tool functionality"""
-    # Setup for testing
-    # These paths are for demonstration and will need valid paths to actual data on your system.
-    tiff_path = "path/to/input.tif"
-    shapefile_output = "path/to/output.shp"
-    shapefile1 = "path/to/input1.shp"
-    shapefile2 = "path/to/input2.shp"
-    intersect_output = "path/to/intersect_output.shp"
-    geojson_output = "path/to/output.geojson"
-    clean_json_output = "path/to/clean_output.json"
+    """Main function to run the toolbox"""
+    toolbox = Toolbox()
+    for tool_class in toolbox.tools:
+        tool = tool_class()
+        print(f"Running tool: {tool.label}")
+        params = tool.getParameterInfo()
+        # Implement additional logic as needed for parameters
 
-    # Simulate tool usage
-    tools = [TifftoShapefile(), AddXY(), IntersectShapefiles(), ShapefileToGeoJSON(), CleanGeoJSONForFlutter()]
-    for tool in tools:
-        arcpy.AddMessage(f"Testing tool: {tool.label}")
-        # Normally you would set parameters like this:
-        # params = tool.getParameterInfo()
-        # params[0].value = some_value
-        # params[1].value = some_other_value
-        # tool.execute(params, None)
-        # For this test, you need to replace `some_value` and `some_other_value` with actual test values.
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
-
