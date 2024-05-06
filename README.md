@@ -1,4 +1,4 @@
-# NRS 528(Spring 2025) Code Challenge Collection : Coding Mastery!
+# NRS 528 (Spring 2025) Code Challenge Collection : Coding Mastery!
 
 ## By Lucy Kamau
 1. Code_Challenge_01
@@ -20,7 +20,7 @@
 6. Code_Challenge_08
    * Functions
 7. Code_Challenge_09
-   * Using arcpy.da module to undertake some basic partitioning of the dataset.
+   * Cursor (using arcpy.da module to undertake some basic partitioning of the dataset)
 8. Code_Challenge_10
    * Rasters
 9. Final Toolbox Challenge
