@@ -1,4 +1,3 @@
-
 import arcpy
 import os
 import json
