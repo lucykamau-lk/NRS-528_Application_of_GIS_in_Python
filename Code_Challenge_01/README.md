@@ -3,7 +3,7 @@ Hello there! I'm Lucy Kamau, a graduate student at URI majoring in Civil and Env
 ## About Me
 I was born and raised in Nairobi, Kenya, a country known for it's long distance athletes. Well, myself I cannot run ~~whispers~~.
 
-My second name is interesting, **Nyambura** which means born during `rgb(rain)` well thats true. July is Winter, i.e  _long rains_ in Kenya.
+My second name is interesting, **Nyambura** which means born during `rgb(rain)` .
 
 I love reading, travelling, hiking and trying different cuisines and on my free time I'm watching soccer a great fan of Manchester United, basketball or scrolling through social media. I recently joined Tiktok and _i waste my time there_.
 
